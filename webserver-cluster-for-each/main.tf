@@ -52,13 +52,16 @@ resource "aws_security_group_rule" "instance_all_outbound" {
 }*/
 
 resource "aws_launch_configuration" "example" {
-    image_id        = "ami-03f65b8614a860c29"
+    image_id        = var.ami
     instance_type   = local.instance_type
     security_groups = [aws_security_group.instance.id]
 
     # Render the User Data script as a template
-    //user_data = templatefile("${path.module}/user-data.sh")
-    user_data = "${file("${path.module}/user-data.sh")}"
+    //user_data = "${file("${path.module}/user-data.sh")}"
+    user_data = templatefile("${path.module}/user-data.sh", {
+            text = var.server_text
+        }
+    )
 
     # Required when using a launch configuration with an auto scaling group.
     lifecycle {
@@ -67,6 +70,7 @@ resource "aws_launch_configuration" "example" {
 }
 
 resource "aws_autoscaling_group" "example" {
+    name = "${var.cluster_name}-${aws_launch_configuration.example.name}"
     launch_configuration    = aws_launch_configuration.example.id
     availability_zones      = ["us-west-2c"]
 
@@ -80,7 +84,9 @@ resource "aws_autoscaling_group" "example" {
         value               = "terraform-asg-example"
         propagate_at_launch = true
     }
-
+    lifecycle {
+        create_before_destroy = true
+    }
     dynamic "tag"{
         for_each = var.custom_tags
         content {

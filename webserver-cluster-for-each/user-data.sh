@@ -5,8 +5,7 @@ sudo apt install apache2 -y
 
 
 sudo cat > /var/www/html/index.html <<EOF
-<h1>Hello, for-each</h1>
+<h1>${text}</h1>
 EOF
 
-#nohup busybox httpd -f -p ${server_port} &
 sudo systemctl start apache2
