@@ -36,14 +36,17 @@ variable "addons" {
     {
       name    = "kube-proxy"
       //version = "v1.27.1-eksbuild.1"
+      //conflicts = "NONE"
     },
     {
       name    = "vpc-cni"
       //version = "v1.12.6-eksbuild.2"
+      //conflicts = "NONE"
     },
     {
       name    = "coredns"
       //version = "v1.10.1-eksbuild.1"
+      //conflicts = "PRESERVE"
     }
   ]
 }

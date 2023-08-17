@@ -101,8 +101,7 @@ resource "aws_eks_node_group" "eks_cluster_nodegroup_ondemand" {
     }
 
     depends_on = [
-        aws_iam_policy_attachment.eks_node_role_policy_attachment,
-        aws_eks_addon.addons
+        aws_iam_policy_attachment.eks_node_role_policy_attachment
     ]
 }
 
@@ -112,9 +111,9 @@ resource "aws_eks_addon" "addons" {
     cluster_name      = aws_eks_cluster.cluster.id
     addon_name        = each.value.name
     //addon_version     = each.value.version
-    //resolve_conflicts = "OVERWRITE"
+    //resolve_conflicts = each.value.conflicts
 
     depends_on = [
-        aws_eks_cluster.cluster
+        aws_eks_node_group.eks_cluster_nodegroup_ondemand
     ]
 }
