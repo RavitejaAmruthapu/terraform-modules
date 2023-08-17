@@ -10,6 +10,22 @@ variable "custom_tags" {
     default = {}
 }
 
+variable "cluster_name" {
+    type = string
+    default = "stage"
+}
+variable "ami" {
+    description = "The AMI to run in the cluster"
+    type = string
+    default = "ami-0fb653ca2d3203ac1"
+}
+
+variable "server_text" {
+    description = "The text the web server should return"
+    type = string
+    default = "Hello, World"
+}
+
 locals {
     http_port               = 80
     ssh_port                = 22
