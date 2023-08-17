@@ -32,3 +32,5 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+**/temporary-kubeconfig
+**/.terraform.lock.hcl
